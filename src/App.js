@@ -19,10 +19,28 @@ export default function App() {
       setResult(respond.data.query.search);
     };
 
-    if (term) {
-      search();
+    if (!result.length) {
+      if (term) {
+        search();
+      }
+    } else {
+      const debounceSearch = setTimeout(() => {
+        if (term) {
+          search();
+        }
+      }, 1200);
+
+      return () => {
+        clearTimeout(debounceSearch);
+      };
     }
-  }, [term]);
+  }, [term, result.length]);
+
+  //init render
+  //useEffect -> check length -> search() -> update resualt
+  //re-render
+  //useEffect ->check length -> search() -> update resualt
+  //re-render
 
   const fetchResult = result.map((el) => {
     return (
