@@ -3,7 +3,15 @@ import axios from 'axios';
 
 export default function App() {
   const [term, setTerm] = useState('javascript');
+  const [debounceSearch, setDebounceSearch] = useState(term);
   const [result, setResult] = useState([]);
+
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setDebounceSearch(term);
+    }, 1200);
+    return () => clearTimeout(timeOut);
+  }, [term]);
 
   useEffect(() => {
     const search = async () => {
@@ -13,28 +21,45 @@ export default function App() {
           list: 'search',
           origin: '*',
           format: 'json',
-          srsearch: term,
+          srsearch: debounceSearch,
         },
       });
       setResult(respond.data.query.search);
     };
 
-    if (!result.length) {
-      if (term) {
-        search();
-      }
-    } else {
-      const debounceSearch = setTimeout(() => {
-        if (term) {
-          search();
-        }
-      }, 1200);
+    search();
+  }, [debounceSearch]);
 
-      return () => {
-        clearTimeout(debounceSearch);
-      };
-    }
-  }, [term, result.length]);
+  // useEffect(() => {
+  //   const search = async () => {
+  //     const respond = await axios.get('https://en.wikipedia.org/w/api.php', {
+  //       params: {
+  //         action: 'query',
+  //         list: 'search',
+  //         origin: '*',
+  //         format: 'json',
+  //         srsearch: term,
+  //       },
+  //     });
+  //     setResult(respond.data.query.search);
+  //   };
+
+  //   if (!result.length) {
+  //     if (term) {
+  //       search();
+  //     }
+  //   } else {
+  //     const debounceSearch = setTimeout(() => {
+  //       if (term) {
+  //         search();
+  //       }
+  //     }, 1200);
+
+  //     return () => {
+  //       clearTimeout(debounceSearch);
+  //     };
+  //   }
+  // }, [term, result.length]);
 
   //init render
   //useEffect -> check length -> search() -> update resualt
