@@ -1,23 +1,4 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-
 export default function App() {
-  const [term, setTerm] = useState('');
-  useEffect(() => {
-    const fetchData = async () => {
-      await axios.get('https://en.wikipedia.org/w/api.php', {
-        params: {
-          action: 'query',
-          format: 'json',
-          list: 'search',
-          srsearch: 'apple',
-          origin: '*',
-        },
-      });
-    };
-    fetchData();
-  }, [term]);
-
   return (
     <div className='container'>
       <div className='row'>
@@ -30,8 +11,6 @@ export default function App() {
               type='text'
               className='form-control'
               id='exampleFormControlInput1'
-              onChange={(e) => setTerm(e.target.value)}
-              value={term}
             />
           </div>
         </div>
