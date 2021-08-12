@@ -26,12 +26,12 @@ export default function App() {
 
   const fetchResult = result.map((el) => {
     return (
-      <tr>
-        <th scope='row' key={el.pageid}>
-          1
-        </th>
+      <tr key={el.pageid}>
+        <td>1</td>
         <td>{el.title}</td>
-        <td>{el.snippet}</td>
+        <td>
+          <span dangerouslySetInnerHTML={{ __html: el.snippet }} />
+        </td>
       </tr>
     );
   });
