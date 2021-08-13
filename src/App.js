@@ -1,9 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
 export default function App() {
   const [term, setTerm] = useState('javascript');
   const [result, setResult] = useState([]);
+
+  //define use ref
+  //prevTerm = undefined;
+  //render
+  //use effect => use ref -> javascript
+  //update state (term) javascript 2
+  //render ->print state (javascript2) / print use ref (javascript)
+  //use effect -> use ref -> javascript2
+
+  const prevStateTerm = useRef('');
+
+  useEffect(() => {
+    prevStateTerm.current = term;
+  }, [term]);
+
+  const prevTerm = prevStateTerm.current;
 
   useEffect(() => {
     const search = async () => {
@@ -20,21 +36,19 @@ export default function App() {
     };
 
     if (!result.length) {
-      if (term) {
-        search();
-      }
-    } else {
+      search();
+    } else if (term !== prevTerm) {
       const debounceSearch = setTimeout(() => {
         if (term) {
           search();
         }
-      }, 1200);
+      }, 2000);
 
       return () => {
         clearTimeout(debounceSearch);
       };
     }
-  }, [term, result.length]);
+  }, [term, result.length, prevTerm]);
 
   //init render
   //useEffect -> check length -> search() -> update resualt
@@ -70,6 +84,8 @@ export default function App() {
               value={term}
             />
           </div>
+          <p>Current term: {term}</p>
+          <p>Prev Term: {prevTerm}</p>
         </div>
       </div>
 
