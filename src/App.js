@@ -1,9 +1,52 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef} from 'react';
 import axios from 'axios';
 
 export default function App() {
   const [term, setTerm] = useState('javascript');
   const [result, setResult] = useState([]);
+  const termUseRef = useRef(); 
+
+
+
+  //init
+  //state -> term = javascript 
+  //state -> result = array empty
+  //ref -> termUseRef -> empty
+  //prevTerm -> termUseRef.current ->empty
+  //render
+
+  //after first render
+   //prevTerm -> termUseRef.current ->empty
+   //useEffect 1 -> termUseRef.current = term -> javascript
+   //useEffect 2 ->result empty -> update state
+   //re render
+
+
+   //after second
+  //prevTerm -> termUseRef.current ->javascript
+   //useEffect 1 -> termUseRef.current = term -> javascript
+   //useEffect 2 ->   //term = javascript vs prevTerm  = javascript
+
+
+
+   //user update the input with php, update state
+   //re render
+  //prevTerm -> termUseRef.current -> javascript
+  //useEffect 1 -> termUseRef.current = term -> php
+  //useEffect 2->//term = php  vs prevTerm = javascript -> search -> hit wiki api -> update result -> re render
+
+  //prevTerm -> termUseRef.current -> php
+    //useEffect 1 -> termUseRef.current = term -> php
+  //useEffect 2->//term = php  vs prevTerm = php
+  
+
+  useEffect(() => {
+    termUseRef.current = term
+ 
+  })
+
+  const prevTerm = termUseRef.current;
+
 
   useEffect(() => {
     const search = async () => {
@@ -23,7 +66,8 @@ export default function App() {
       if (term) {
         search();
       }
-    } else {
+
+    } else if(term !== prevTerm) {
       const debounceSearch = setTimeout(() => {
         if (term) {
           search();
@@ -34,7 +78,7 @@ export default function App() {
         clearTimeout(debounceSearch);
       };
     }
-  }, [term, result.length]);
+  }, [term, result.length, prevTerm]);
 
   //init render
   //useEffect -> check length -> search() -> update resualt
