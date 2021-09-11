@@ -1,55 +1,45 @@
-import { useEffect, useState, useRef} from 'react';
+import { useEffect, useState} from 'react';
+import usePrevState from './hooks/usePrevState';
+
 import axios from 'axios';
 
 export default function App() {
   const [term, setTerm] = useState('javascript');
   const [result, setResult] = useState([]);
-  const termUseRef = useRef(); 
+  const prevTerm = usePrevState(term); 
+
+ //init
+ //term -> javascript
+ //result -> array empty
+ //prevTerm undifined / empty
+ //render
+
+ //after render
+ //prevTerm javascript
+ //useEffect API -> result is empty -> search -> update result - >re render
+ //re render
+
+ //after render
+//prevTerm javascript
+ //useEffect API term ->javascript vs  prevTerm -> javascript
+
+ //php
+ //re render
+//prevTerm javascript
+//useEffect -> term -> php vs prevTerm -> javascript -> update result
+//re render
 
 
-
-  //init
-  //state -> term = javascript 
-  //state -> result = array empty
-  //ref -> termUseRef -> empty
-  //prevTerm -> termUseRef.current ->empty
-  //render
-
-  //after first render
-   //prevTerm -> termUseRef.current ->empty
-   //useEffect 1 -> termUseRef.current = term -> javascript
-   //useEffect 2 ->result empty -> update state
-   //re render
+///after re render
+//prevTerm php
+//useEffect -> term -> php vs prevTerm -> PHP 
 
 
-   //after second
-  //prevTerm -> termUseRef.current ->javascript
-   //useEffect 1 -> termUseRef.current = term -> javascript
-   //useEffect 2 ->   //term = javascript vs prevTerm  = javascript
-
-
-
-   //user update the input with php, update state
-   //re render
-  //prevTerm -> termUseRef.current -> javascript
-  //useEffect 1 -> termUseRef.current = term -> php
-  //useEffect 2->//term = php  vs prevTerm = javascript -> search -> hit wiki api -> update result -> re render
-
-  //prevTerm -> termUseRef.current -> php
-    //useEffect 1 -> termUseRef.current = term -> php
-  //useEffect 2->//term = php  vs prevTerm = php
-  
-
-  useEffect(() => {
-    termUseRef.current = term
- 
-  })
-
-  const prevTerm = termUseRef.current;
+   
 
 
   useEffect(() => {
-    const search = async () => {
+     const search = async () => {
       const respond = await axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
           action: 'query',
