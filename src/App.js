@@ -11,35 +11,44 @@ export default function App() {
  //init
  //term -> javascript
  //result -> array empty
- //prevTerm undifined / empty
- //render
-
- //after render
- //prevTerm javascript
- //useEffect API -> result is empty -> search -> update result - >re render
- //re render
-
- //after render
-//prevTerm javascript
- //useEffect API term ->javascript vs  prevTerm -> javascript
-
- //php
- //re render
-//prevTerm javascript
-//useEffect -> term -> php vs prevTerm -> javascript -> update result
-//re render
+ //prevTerm -> custom hooks
+  //useEffect will not work
+  //value undifined
+//render
 
 
-///after re render
-//prevTerm php
-//useEffect -> term -> php vs prevTerm -> PHP 
+//after first render
+//prevTerm -> custom hooks
+  //value undifined
+  //use Effect will work -> ref.current = term = javascript
+
+//use effect wiki api ->   result == 0 -> search -> update -> setResult -> re render
 
 
-   
+//after sec render
+//prevTerm -> custom hooks
+  //value javascript
+  //use Effect will work -> ref.current = term = javascript
+//use effect wiki api ->  term -> javascript vs  prevTerm -> javascript
+
+
+//php
+//render
+//prevTerm -> custom hooks
+  //value javascript
+  //use Effect will work -> ref.current = term = php
+//use effect wiki api ->  term -> PHP vs  prevTerm -> javascript -> SEARCH -> UPDATE result -> re render
+
+
+//after re render
+//prevTerm -> custom hooks
+  //value php
+  //use Effect will work -> ref.current = term = php
+//use effect wiki api ->  term -> PHP vs  prevTerm -> php 
 
 
   useEffect(() => {
-     const search = async () => {
+      const search = async () => {
       const respond = await axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
           action: 'query',
