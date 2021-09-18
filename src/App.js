@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import usePrevState from './hooks/usePrevState';
 
 import axios from 'axios';
@@ -6,49 +6,52 @@ import axios from 'axios';
 export default function App() {
   const [term, setTerm] = useState('javascript');
   const [result, setResult] = useState([]);
-  const prevTerm = usePrevState(term); 
+  const prevTerm = usePrevState(term);
 
- //init
- //term -> javascript
- //result -> array empty
- //prevTerm -> custom hooks
-  //useEffect will not work
-  //value undifined
-//render
+  //init
+  //term : state => javascript
+  //result: state => array:empty
+  //prevTerm: custom hook -> skip use effect -> return undifined
+  //useEffect API -> skip
+  //return
 
+  //after render  1
+  //useEffect -> inside custom hook -> use ref -> javascript
+  //useEffect -> API -> update state -> result
 
-//after first render
-//prevTerm -> custom hooks
-  //value undifined
-  //use Effect will work -> ref.current = term = javascript
+  //new render
+  //term : state => javascript
+  //result: state -> array: list from wiki
+  //prevTerm -> custom hook -> return javascript
+  //return
 
-//use effect wiki api ->   result == 0 -> search -> update -> setResult -> re render
+  //after render 2
+  //useEffect -> inside custom hook -> use ref -> javascript
+  //useEffect -> API ->      //term : javascript vs prevTerm : javascript
 
+  //update input -> update state ->  re render
+  //term : state => javascript2
+  //result : state => old data
+  //prevTerm -> custom hook -> javascript
+  //return
 
-//after sec render
-//prevTerm -> custom hooks
-  //value javascript
-  //use Effect will work -> ref.current = term = javascript
-//use effect wiki api ->  term -> javascript vs  prevTerm -> javascript
+  //after render 3
+  //useEffect -> inside custom hook -> use ref -> javascript2
+  //useEffect -> API ->   //term : javascript2 vs prevTerm : javascript => search will run => update state => re render
 
+  //re render 4
+  //term : state => javascript2
+  //result : state => new data
+  //prevTerm => javascript2
+  //return
 
-//php
-//render
-//prevTerm -> custom hooks
-  //value javascript
-  //use Effect will work -> ref.current = term = php
-//use effect wiki api ->  term -> PHP vs  prevTerm -> javascript -> SEARCH -> UPDATE result -> re render
-
-
-//after re render
-//prevTerm -> custom hooks
-  //value php
-  //use Effect will work -> ref.current = term = php
-//use effect wiki api ->  term -> PHP vs  prevTerm -> php 
-
+  //after render 4
+  //useEffect -> inside custom hook -> javascript2
+  //useEffect -> API -> //term : javascript2 vs prevTerm : javascript2
 
   useEffect(() => {
-      const search = async () => {
+    //API
+    const search = async () => {
       const respond = await axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
           action: 'query',
@@ -65,8 +68,8 @@ export default function App() {
       if (term) {
         search();
       }
-
-    } else if(term !== prevTerm) {
+      //term : javascript2 vs prevterm javascript2
+    } else if (term !== prevTerm) {
       const debounceSearch = setTimeout(() => {
         if (term) {
           search();
@@ -78,12 +81,6 @@ export default function App() {
       };
     }
   }, [term, result.length, prevTerm]);
-
-  //init render
-  //useEffect -> check length -> search() -> update resualt
-  //re-render
-  //useEffect ->check length -> search() -> update resualt
-  //re-render
 
   const fetchResult = result.map((el) => {
     return (
